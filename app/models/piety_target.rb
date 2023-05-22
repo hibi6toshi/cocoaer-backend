@@ -1,0 +1,2 @@
+class PietyTarget < ApplicationRecord
+end
