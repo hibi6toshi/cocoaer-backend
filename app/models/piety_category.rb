@@ -1,0 +1,2 @@
+class PietyCategory < ApplicationRecord
+end
