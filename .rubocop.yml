@@ -1,6 +1,10 @@
 inherit_from: .rubocop_todo.yml
 
+AllCops:
+  NewCops: enable
 Documentation:
-  Enabled: false
+  Enabled: true
 Style/FrozenStringLiteralComment:
+  Enabled: false
+Naming/AccessorMethodName:
   Enabled: false

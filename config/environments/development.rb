@@ -53,6 +53,8 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  # デフォルト画像のための設定
+  config.action_controller.asset_host = 'http://localhost:3010'
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
