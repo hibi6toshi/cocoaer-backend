@@ -33,6 +33,7 @@ Layout/EmptyLines:
 Layout/EmptyLinesAroundClassBody:
   Exclude:
     - 'app/lib/auth0_client.rb'
+    
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
@@ -84,7 +85,7 @@ Layout/TrailingEmptyLines:
 Lint/UselessAssignment:
   Exclude:
     - 'app/lib/auth0_client.rb'
-
+    - 'app/controllers/**/*'
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
@@ -104,6 +105,10 @@ Metrics/PerceivedComplexity:
 Naming/AccessorMethodName:
   Exclude:
     - 'app/lib/auth0_client.rb'
+
+Naming/VariableNumber:
+  Exclude:
+    - 'app/controllers/**/*'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).

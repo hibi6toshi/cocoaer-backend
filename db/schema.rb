@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_18_060654) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_09_101533) do
+  create_table "actions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "project_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_actions_on_project_id"
+    t.index ["user_id"], name: "index_actions_on_user_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "piety_target_id", null: false
@@ -69,6 +79,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_060654) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "project_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_tasks_on_project_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "sub"
     t.string "avatar"
@@ -76,6 +96,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_060654) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "actions", "projects"
+  add_foreign_key "actions", "users"
   add_foreign_key "articles", "piety_categories"
   add_foreign_key "articles", "piety_targets"
   add_foreign_key "articles", "users"
@@ -85,4 +107,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_060654) do
   add_foreign_key "projects", "piety_categories"
   add_foreign_key "projects", "piety_targets"
   add_foreign_key "projects", "users"
+  add_foreign_key "tasks", "projects"
+  add_foreign_key "tasks", "users"
 end

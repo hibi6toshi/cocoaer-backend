@@ -3,6 +3,13 @@ class AuthorizationService
     @headers = headers
   end
 
+  def create_user
+    @auth_payload, @auth_header = verify_token
+    return if current_user
+
+    @user = User.create_user_with_payload(@auth_payload)
+  end
+
   def current_user
     @auth_payload, @auth_header = verify_token
     @user = User.from_token_payload(@auth_payload)
