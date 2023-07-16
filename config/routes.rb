@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, only: %i[create]
-      resources :articles, only: %i[index show create]
-      resources :projects, only: %i[index show create]
-      resources :forums, only: %i[index show create]
+      resources :articles, only: %i[index show create edit update destroy]
+      resources :projects, only: %i[index show create edit update destroy]
+      resources :forums, only: %i[index show create edit update destroy]
       resources :piety_categorys, only: %i[index]
       resources :piety_targets, only: %i[index]
     end
