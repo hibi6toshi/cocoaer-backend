@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Articles", type: :request do
   let!(:user) { create(:user) }
+  let(:other_user) {create(:user) }
+  let(:article) { create(:article, user: user) }
+  let(:other_article) { create(:article, user: other_user) }
   let!(:authorization_service) { instance_double(AuthorizationService) }
 
   before do
@@ -71,6 +74,104 @@ RSpec.describe "Api::V1::Articles", type: :request do
       # puts response.body
       expect(response).to have_http_status(:ok)
       expect(response).to be_successful
+    end
+  end
+
+  describe 'GET #edit' do
+    context 'when accessed by the owner user' do
+      before do
+        authorization_stub
+        get "/api/v1/articles/#{article.id}/edit"
+      end
+
+      it 'returns the article for editing' do
+        expect(response).to have_http_status(:ok)
+        expect(response).to be_successful
+      end
+    end
+
+    context 'when accessed by a different user' do
+      before do
+        authorization_stub
+        get "/api/v1/articles/#{other_article.id}/edit"
+      end
+
+      it 'returns a not_found error' do
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:updated_title) { 'Updated Article' }
+    let(:updated_body) { 'This is an updated article' }
+    let(:updated_params) do
+      {
+        article: {
+          title: updated_title,
+          body: updated_body,
+        }
+      }
+    end
+
+    context 'when updated by the owner user' do
+      before do
+        authorization_stub
+        patch "/api/v1/articles/#{article.id}", params: updated_params
+        article.reload
+      end
+
+      it 'updates the article' do
+        expect(response).to have_http_status(:ok)
+        expect(response).to be_successful
+      end
+
+      it 'updates the article attributes' do
+        expect(article.title).to eq(updated_title)
+        expect(article.body).to eq(updated_body)
+      end
+    end
+
+    context 'when updated by a different user' do
+      before do
+        authorization_stub
+        patch "/api/v1/articles/#{other_article.id}", params: updated_params
+        article.reload
+      end
+
+      it 'returns a not_found error' do
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "doesn't update the article attributes" do
+        expect(article.title).to_not eq(updated_title)
+        expect(article.body).to_not eq(updated_body)
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    context 'when deleted by the owner user' do
+      before do
+        authorization_stub
+        delete "/api/v1/articles/#{article.id}"
+      end
+
+      it 'deletes the article' do
+        expect(response).to have_http_status(:ok)
+        expect(response).to be_successful
+      end
+    end
+
+    context 'when deleted by a different user' do
+      before do
+        authorization_stub
+        delete "/api/v1/articles/#{other_article.id}"
+      end
+
+      it "returns a forbidden error" do
+        expect(response).to have_http_status(:not_found)
+      end
     end
   end
 end

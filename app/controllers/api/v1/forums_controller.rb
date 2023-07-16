@@ -3,7 +3,6 @@ class Api::V1::ForumsController < SecuredController
 
   def index
     @forums = Forum.includes(:user).all
-    # render json: @forums.to_json(include: [{ user: { only: [:id, :avatar] } }])
 
     render json: {
       data: @forums.as_json(include: [{ user: { only: [:id, :avatar] } }])
@@ -27,6 +26,33 @@ class Api::V1::ForumsController < SecuredController
     else
       render_400(nil, @forum.errors.full_messages)
     end
+  end
+
+  def edit
+    @forum = @current_user.forums.find(params[:id])
+    render json: {
+      data: @forum.as_json(include: [{ user: { only: [:id, :avatar] } }])
+    }
+  end
+
+  def update
+    @forum = @current_user.forums.find(params[:id])
+
+    if @forum.update(forums_param)
+      render json: {
+        data: @forum.as_json(include: [{ user: { only: [:id, :avatar] } }])
+      }
+    else
+      render_400(nil, @forum.errors.full_messages)
+    end
+  end
+
+  def destroy
+    @forum = @current_user.forums.find(params[:id]).destroy!
+
+    render json: {
+      data: @forum.as_json
+    }
   end
 
   private

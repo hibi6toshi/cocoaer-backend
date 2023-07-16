@@ -26,6 +26,31 @@ class Api::V1::ArticlesController < SecuredController
     end
   end
 
+  def edit
+    @article = @current_user.articles.find(params[:id])
+    render json: {
+      data: @article.as_json(include: [{ user: { only: [:id, :avatar] } }])
+    }
+  end
+
+  def update
+    @article = @current_user.articles.find(params[:id])
+    if @article.update(article_params)
+      render json: {
+        data: @article.as_json(include: [{ user: { only: [:id, :avatar] } }])
+      }
+    else
+      render_400(nil, @article.errors.full_messages)
+    end
+  end
+
+  def destroy
+    @article = @current_user.articles.find(params[:id]).destroy!
+    render json: {
+      data: @article.as_json
+    }
+  end
+
   private
 
   def article_params
