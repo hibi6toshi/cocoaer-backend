@@ -1,4 +1,6 @@
 class Article < ApplicationRecord
+  include Favoritable
+
   mount_uploader :picture, ImageUploader
 
   belongs_to :user
