@@ -11,7 +11,8 @@ Rails.application.routes.draw do
       resources :forums, only: %i[index show create edit update destroy]
       resources :piety_categorys, only: %i[index]
       resources :piety_targets, only: %i[index]
-      resources :favorites
+      resources :favorites, only: %i[index create destroy]
+      resource :my_post, only: %i[show]
     end
   end
 end
