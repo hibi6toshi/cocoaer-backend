@@ -1,16 +1,16 @@
 class Api::V1::ArticlesController < SecuredController
   skip_before_action :authorize_request, only: %i[index show]
   def index
-    @articles = Article.all.includes(:user, :favorited_by_users).all
+    @articles = Article.all.includes(:user, :favorited_by_users)
     render json: {
-      data: @articles.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+      data: @articles.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 
   def show
     @article = Article.includes(:user, :favorited_by_users).find(params[:id])
     render json: {
-      data: @article.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+      data: @article.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 
@@ -19,7 +19,7 @@ class Api::V1::ArticlesController < SecuredController
     logger.debug(@article.inspect)
     if @article.save
       render json: {
-        data: @article.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+        data: @article.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
       }
     else
       render_400(nil, @article.errors.full_messages)
@@ -29,7 +29,7 @@ class Api::V1::ArticlesController < SecuredController
   def edit
     @article = @current_user.articles.find(params[:id])
     render json: {
-      data: @article.as_json(include: [{ user: { only: [:id, :avatar] } }])
+      data: @article.as_json(include: [{ user: { only: [:id, :avatar, :name] } }])
     }
   end
 
@@ -37,7 +37,7 @@ class Api::V1::ArticlesController < SecuredController
     @article = @current_user.articles.find(params[:id])
     if @article.update(article_params)
       render json: {
-        data: @article.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+        data: @article.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
       }
     else
       render_400(nil, @article.errors.full_messages)

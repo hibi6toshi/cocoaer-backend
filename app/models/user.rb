@@ -12,14 +12,16 @@ class User < ApplicationRecord
   has_many :favorited_projects, through: :favorites, source: :favoritable, source_type: 'Project'
   has_many :favorited_forums, through: :favorites, source: :favoritable, source_type: 'Forum'
 
+  validates :name, presence: true
+
   def self.from_token_payload(payload)
     find_by(sub: payload['sub'])
   end
 
-  def self.create_user_with_payload(payload)
+  def self.create_user_with_payload(payload, name)
     return if find_by(sub: payload['sub'])
 
-    create!(sub: payload['sub'])
+    create!(sub: payload['sub'], name:)
   end
 
   def favorite(favoritable)
@@ -28,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def unfavorite(favoritable)
-    favorite = favorites.find_by(favoritable: favoritable)
+    favorite = favorites.find_by(favoritable:)
     favorite.destroy
   end
 end
