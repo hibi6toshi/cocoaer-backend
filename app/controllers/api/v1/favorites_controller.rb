@@ -3,7 +3,7 @@ class Api::V1::FavoritesController < SecuredController
   def index
     @favorites = @current_user.send("favorited_#{params[:favoritable_type].downcase}s").includes(:user, :favorited_by_users)
     render json: {
-      data: @favorites.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+      data: @favorites.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 

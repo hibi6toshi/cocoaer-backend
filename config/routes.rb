@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   # root "articles#index"
   namespace :api do
     namespace :v1 do
-      resources :users, only: %i[create]
+      resources :users, only: %i[create show] do
+        resources :articles, only: [:index], module: 'user'
+        resources :projects, only: [:index], module: 'user'
+        resources :forums, only: [:index], module: 'user'
+      end
       resources :articles, only: %i[index show create edit update destroy]
       resources :projects, only: %i[index show create edit update destroy]
       resources :forums, only: %i[index show create edit update destroy]
@@ -13,6 +17,7 @@ Rails.application.routes.draw do
       resources :piety_targets, only: %i[index]
       resources :favorites, only: %i[index create destroy]
       resource :my_post, only: %i[show]
+      resource :profile, only: %i[show update]
     end
   end
 end

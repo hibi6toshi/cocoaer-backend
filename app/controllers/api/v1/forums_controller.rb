@@ -5,7 +5,7 @@ class Api::V1::ForumsController < SecuredController
     @forums = Forum.includes(:user, :favorited_by_users).all
 
     render json: {
-      data: @forums.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+      data: @forums.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 
@@ -13,7 +13,7 @@ class Api::V1::ForumsController < SecuredController
     @forum = Forum.includes(:user, :favorited_by_users).find(params[:id])
 
     render json: {
-      data: @forum.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+      data: @forum.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 
@@ -21,7 +21,7 @@ class Api::V1::ForumsController < SecuredController
     @forum = @current_user.forums.build(forums_param)
     if @forum.save
       render json: {
-        data: @forum.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+        data: @forum.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
       }
     else
       render_400(nil, @forum.errors.full_messages)
@@ -31,7 +31,7 @@ class Api::V1::ForumsController < SecuredController
   def edit
     @forum = @current_user.forums.find(params[:id])
     render json: {
-      data: @forum.as_json(include: [{ user: { only: [:id, :avatar] } }])
+      data: @forum.as_json(include: [{ user: { only: [:id, :avatar, :name] } }])
     }
   end
 
@@ -40,7 +40,7 @@ class Api::V1::ForumsController < SecuredController
 
     if @forum.update(forums_param)
       render json: {
-        data: @forum.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+        data: @forum.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
       }
     else
       render_400(nil, @forum.errors.full_messages)

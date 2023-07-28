@@ -4,7 +4,7 @@ class Api::V1::ProjectsController < SecuredController
   def index
     @projects = Project.includes(:user, :favorited_by_users).all
     render json: {
-      data: @projects.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+      data: @projects.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 
@@ -12,7 +12,7 @@ class Api::V1::ProjectsController < SecuredController
     @project = Project.includes(:user, :tasks, :actions, :favorited_by_users).find(params[:id])
 
     render json: {
-      data: @project.as_json(include: [{ user: { only: [:id, :avatar] } }, { tasks: { only: [:id, :name] } }, { actions: { only: [:id, :name] } }], methods: :favorited_by_user_ids)
+      data: @project.as_json(include: [{ user: { only: [:id, :avatar, :name] } }, { tasks: { only: [:id, :name] } }, { actions: { only: [:id, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 
@@ -21,7 +21,7 @@ class Api::V1::ProjectsController < SecuredController
     @project_form = ProjectForm.new(@project)
     if @project_form.save(project_form_params)
       render json: {
-        data: @project.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+        data: @project.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
       }
     else
       render_400(nil, @project_form.errors.full_messages)
@@ -31,7 +31,7 @@ class Api::V1::ProjectsController < SecuredController
   def edit
     @project = @current_user.projects.includes(:user, :tasks, :actions).find(params[:id])
     render json: {
-      data: @project.as_json(include: [{ user: { only: [:id, :avatar] } }, { tasks: { only: [:id, :name] } }, { actions: { only: [:id, :name] } }])
+      data: @project.as_json(include: [{ user: { only: [:id, :avatar, :name] } }, { tasks: { only: [:id, :name] } }, { actions: { only: [:id, :name] } }])
     }
   end
 
@@ -40,7 +40,7 @@ class Api::V1::ProjectsController < SecuredController
     @project_form = ProjectForm.new(@project)
     if @project_form.save(project_form_params)
       render json: {
-        data: @project.as_json(include: [{ user: { only: [:id, :avatar] } }])
+        data: @project.as_json(include: [{ user: { only: [:id, :avatar, :name] } }])
       }
     else
       render_400(nil, @project_form.errors.full_messages)

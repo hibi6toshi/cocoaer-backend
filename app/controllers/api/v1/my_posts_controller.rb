@@ -4,7 +4,7 @@ class Api::V1::MyPostsController < SecuredController
   def show
     @myposts = @current_user.send("#{params[:content_type].downcase}s").includes(:user, :favorited_by_users)
     render json: {
-      data: @myposts.as_json(include: [{ user: { only: [:id, :avatar] } }], methods: :favorited_by_user_ids)
+      data: @myposts.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
     }
   end
 
