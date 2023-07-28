@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :piety_targets, only: %i[index]
       resources :favorites, only: %i[index create destroy]
       resource :my_post, only: %i[show]
+      resource :profile, only: %i[show update]
     end
   end
 end
