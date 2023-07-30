@@ -10,9 +10,15 @@ Rails.application.routes.draw do
         resources :projects, only: [:index], module: 'user'
         resources :forums, only: [:index], module: 'user'
       end
-      resources :articles, only: %i[index show create edit update destroy]
-      resources :projects, only: %i[index show create edit update destroy]
-      resources :forums, only: %i[index show create edit update destroy]
+      resources :articles, only: %i[index show create edit update destroy] do
+        resources :comments, only: %i[index create update destroy], module: :articles
+      end
+      resources :projects, only: %i[index show create edit update destroy] do
+        # resources :comments, only: %i[index create update destroy], module: :projects
+      end
+      resources :forums, only: %i[index show create edit update destroy] do
+        resources :comments, only: %i[index create update destroy], module: :forums
+      end
       resources :piety_categorys, only: %i[index]
       resources :piety_targets, only: %i[index]
       resources :favorites, only: %i[index create destroy]

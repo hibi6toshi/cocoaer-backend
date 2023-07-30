@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_24_211213) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_28_150426) do
   create_table "actions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "project_id", null: false
@@ -35,6 +35,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_211213) do
     t.index ["piety_category_id"], name: "index_articles_on_piety_category_id"
     t.index ["piety_target_id"], name: "index_articles_on_piety_target_id"
     t.index ["user_id"], name: "index_articles_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "commentable_type", null: false
+    t.integer "commentable_id", null: false
+    t.integer "user_id", null: false
+    t.string "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -113,6 +124,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_211213) do
   add_foreign_key "articles", "piety_categories"
   add_foreign_key "articles", "piety_targets"
   add_foreign_key "articles", "users"
+  add_foreign_key "comments", "users"
   add_foreign_key "favorites", "users"
   add_foreign_key "forums", "piety_categories"
   add_foreign_key "forums", "piety_targets"

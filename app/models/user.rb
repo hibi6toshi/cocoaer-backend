@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :forums, dependent: :destroy
   has_many :tasks, dependent: :destroy
   has_many :actions, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   has_many :favorites, dependent: :destroy
   has_many :favorited_articles, through: :favorites, source: :favoritable, source_type: 'Article'

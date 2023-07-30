@@ -1,5 +1,6 @@
 class Article < ApplicationRecord
   include Favoritable
+  include Commentable
 
   mount_uploader :picture, ImageUploader
 
