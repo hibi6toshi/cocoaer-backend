@@ -1,9 +1,13 @@
 class Api::V1::FavoritesController < SecuredController
   before_action :valid_param?, :set_favoritable, only: %i[create destroy]
+
+  include Api::Pagination
+
   def index
-    @favorites = @current_user.send("favorited_#{params[:favoritable_type].downcase}s").includes(:user, :favorited_by_users)
+    @favorites = @current_user.send("favorited_#{params[:favoritable_type].downcase}s").includes(:user, :favorited_by_users).order(created_at: :desc).page(params[:page])
     render json: {
-      data: @favorites.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
+      data: @favorites.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids),
+      pagination_info: pagination_info(@favorites)
     }
   end
 
