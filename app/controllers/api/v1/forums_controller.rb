@@ -1,11 +1,14 @@
 class Api::V1::ForumsController < SecuredController
   skip_before_action :authorize_request, only: %i[index]
 
+  include Api::Pagination
+
   def index
-    @forums = Forum.includes(:user, :favorited_by_users).all
+    @forums = Forum.includes(:user, :favorited_by_users).all.order(created_at: :desc).page(params[:page])
 
     render json: {
-      data: @forums.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
+      data: @forums.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids),
+      pagination_info: pagination_info(@forums)
     }
   end
 

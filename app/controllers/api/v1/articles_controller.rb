@@ -1,9 +1,13 @@
 class Api::V1::ArticlesController < SecuredController
   skip_before_action :authorize_request, only: %i[index show]
+
+  include Api::Pagination
+
   def index
-    @articles = Article.all.includes(:user, :favorited_by_users)
+    @articles = Article.all.includes(:user, :favorited_by_users).order(created_at: :desc).page(params[:page])
     render json: {
-      data: @articles.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids)
+      data: @articles.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids),
+      pagination_info: pagination_info(@articles)
     }
   end
 
