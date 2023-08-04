@@ -1,4 +1,6 @@
-class Api::V1::UsersController < ApplicationController
+class Api::V1::UsersController < SecuredController 
+  skip_before_action :authorize_request, only: %i[create]
+
   def create
     authorize_request = AuthorizationService.new(request.headers)
     user = authorize_request.current_user
@@ -9,5 +11,9 @@ class Api::V1::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     render json: { data: @user.as_json(only: [:id, :avatar, :name, :introduction]) }
+  end
+
+  def destroy
+    @current_user.destroy!
   end
 end

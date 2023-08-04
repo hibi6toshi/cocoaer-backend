@@ -22,4 +22,17 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(body['data']['id']).to eq other_user.id
     end
   end
+
+  describe "DELTE/ destroy" do
+    before do
+      authorization_stub
+    end
+
+    it "return user" do
+      delete "/api/v1/users/#{user.id}"
+
+      expect(response).to have_http_status(:success)
+      expect { user.reload }.to raise_error ActiveRecord::RecordNotFound
+    end
+  end
 end
