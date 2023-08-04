@@ -247,6 +247,7 @@ DEPENDENCIES
   factory_bot_rails
   jwt
   kaminari
+  mini_magick
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.4, >= 7.0.4.3)
