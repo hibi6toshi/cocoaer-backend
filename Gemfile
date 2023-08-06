@@ -57,3 +57,8 @@ group :development do
   gem 'rubocop', require: false
 end
 
+group :production do
+ gem 'mysql2', '~> 0.5'
+ gem 'unicorn'
+end
+
