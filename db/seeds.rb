@@ -13,7 +13,7 @@ piety_categories = [
   { id: 4, name: "体験" },
   { id: 5, name: "季節ごと・行事" },
   { id: 6, name: "ライフイベント" },
-  { id: 7, name: "その他" }
+  { id: 999, name: "その他" }
 ]
 
 piety_categories.each do |category|
@@ -32,7 +32,7 @@ piety_targets = [
   { id: 9, name: "仕事仲間" },
   { id: 10, name: "ペット" },
   { id: 11, name: "推し" },
-  { id: 12, name: "その他" }
+  { id: 999, name: "その他" }
 ]
 
 piety_targets.each do |target|
