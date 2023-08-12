@@ -43,6 +43,7 @@ gem 'jwt'
 gem 'rack-cors'
 
 gem 'fog-aws'
+gem 'unicorn'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -58,8 +59,6 @@ group :development do
 end
 
 group :production do
-  gem 'pg', '>= 0.18', '< 2.0'
-#  gem 'mysql2', '~> 0.5'
-  gem 'unicorn'
+  gem 'mysql2', '~> 0.5'
 end
 
