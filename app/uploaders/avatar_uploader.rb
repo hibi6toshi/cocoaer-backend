@@ -6,8 +6,13 @@ class AvatarUploader < CarrierWave::Uploader::Base
   process resize_to_fit: [400, 300]
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  if Rails.env.development? # 開発環境の場合
+    storage :file
+  elsif Rails.env.test? # テスト環境の場合
+    storage :file
+  else # 本番環境の場合
+    storage :fog
+  end
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -16,11 +21,11 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
-  def default_url(*args)
-    # For Rails 3.1+ asset pipeline compatibility:
-    ActionController::Base.helpers.asset_path("fallback/" + "images/" + [version_name, "defaultAvatar.png"].compact.join('_'))
-    # "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  end
+  # def default_url(*args)
+  #   # For Rails 3.1+ asset pipeline compatibility:
+  #   ActionController::Base.helpers.asset_path("fallback/" + "images/" + [version_name, "defaultAvatar.png"].compact.join('_'))
+  #   # "/images/fallback/" + [version_name, "default.png"].compact.join('_')
+  # end
 
   # Process files as they are uploaded:
   # process scale: [200, 300]
