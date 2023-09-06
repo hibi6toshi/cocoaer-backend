@@ -13,14 +13,7 @@ RUN bundle install --without test development
 ADD . /app
 EXPOSE 3000
 
-CMD ["/bin/sh", "-c", "bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails db:seed && bundle exec unicorn -p 3000 -c /app/config/unicorn.rb -E production"]
+CMD ["/bin/sh", "-c", "bundle exec unicorn -p 3000 -c /app/config/unicorn.rb -E production"]
 
-#通った　rails dbがおかしい？
-# CMD ["/bin/sh", "-c", "bundle exec unicorn -p 3000 -c /app/config/unicorn.rb -E production"]
-
-# 通った 多分unicorn周りがおかしい?
-# CMD ["/bin/sh", "-c", "bundle exec rails db:migrate && bundle exec unicorn -p 3000 -E production"]  
-
-# ECRの環境変数設定で、RAILS_ENV = production を指定している。 ２回目以降はdb:create不要
-# CMD ["/bin/sh", "-c", "bundle exec rails db:migrate && bundle exec rails db:seed && bundle exec unicorn -p 3000 -c /app/config/unicorn.rb -E production"]
+# 初回時のCMD
 # CMD ["/bin/sh", "-c", "bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails db:seed && bundle exec unicorn -p 3000 -c /app/config/unicorn.rb -E production"]
