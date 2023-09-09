@@ -4,10 +4,13 @@ class Api::V1::ProjectsController < SecuredController
   include Api::Pagination
 
   def index
-    @projects = Project.includes(:user, :favorited_by_users).all.order(created_at: :desc).page(params[:page])
+    @q = Project.ransack(params[:q])
+
+    @projects = @q.result(distinct: true).includes(:user, :favorited_by_users).all.order(created_at: :desc).page(params[:page])
     render json: {
       data: @projects.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids),
-      pagination_info: pagination_info(@projects)
+      pagination_info: pagination_info(@projects),
+      q: params[:q]
     }
   end
 
