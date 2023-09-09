@@ -4,11 +4,13 @@ class Api::V1::ForumsController < SecuredController
   include Api::Pagination
 
   def index
-    @forums = Forum.includes(:user, :favorited_by_users).all.order(created_at: :desc).page(params[:page])
+    @q = Forum.ransack(params[:q])
 
+    @forums = @q.result(distinct: true).includes(:user, :favorited_by_users).all.order(created_at: :desc).page(params[:page])
     render json: {
       data: @forums.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids),
-      pagination_info: pagination_info(@forums)
+      pagination_info: pagination_info(@forums),
+      q: params[:q]
     }
   end
 

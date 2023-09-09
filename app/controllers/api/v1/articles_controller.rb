@@ -4,10 +4,13 @@ class Api::V1::ArticlesController < SecuredController
   include Api::Pagination
 
   def index
-    @articles = Article.all.includes(:user, :favorited_by_users).order(created_at: :desc).page(params[:page])
+    @q = Article.ransack(params[:q])
+
+    @articles = @q.result(distinct: true).includes(:user, :favorited_by_users).order(created_at: :desc).page(params[:page])
     render json: {
       data: @articles.as_json(include: [{ user: { only: [:id, :avatar, :name] } }], methods: :favorited_by_user_ids),
-      pagination_info: pagination_info(@articles)
+      pagination_info: pagination_info(@articles),
+      q: params[:q]
     }
   end
 
