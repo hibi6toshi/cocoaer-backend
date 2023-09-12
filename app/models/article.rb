@@ -4,6 +4,12 @@ class Article < ApplicationRecord
 
   mount_uploader :picture, ImageUploader
 
+  validates :title, presence: true
+  validates :title, length: { maximum: 30 }
+  validates :body, presence: true
+  validates :cost, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
+  validates :days, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
+
   belongs_to :user
   belongs_to :piety_category
   belongs_to :piety_target

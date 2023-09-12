@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :comment do
-    association :user
+    association :user, factory: :user
     sequence(:body) { |n| "comment_body_#{n}" }
 
     trait :with_article do

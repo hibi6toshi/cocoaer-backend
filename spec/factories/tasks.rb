@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :task do
-    user { nil }
-    project { nil }
+    association :user, factory: :user
+    association :project, factory: :project
     name { "MyString" }
   end
 end
