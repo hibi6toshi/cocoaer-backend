@@ -5,6 +5,7 @@ class ProjectForm
   attr_accessor :title, :body, :piety_category_id, :piety_target_id, :limit_day, :cost, :tasks, :actions
 
   validates :title, :body, :piety_category_id, :piety_target_id, presence: true
+  validates :title, length: { maximum: 30 }
 
   def initialize(project)
     super()
